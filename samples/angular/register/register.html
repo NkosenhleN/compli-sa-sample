@@ -1,0 +1,112 @@
+<!-- Copyright (c) 2026 Nkosenhle. Licensed under AGPL-3.0. -->
+<!-- Source: CompliSA — Compliance & Tender Readiness Platform -->
+
+<div class="auth-page">
+  <div class="auth-panel-left">
+    <div class="auth-brand-top">
+      <div class="auth-logo">CompliSA</div>
+      <div class="auth-tagline">Compliance Made Simple</div>
+    </div>
+
+    <div class="auth-brand-centre">
+      <h1>CompliSA</h1>
+      <p>
+        Track your compliance obligations in one place. Stay audit-ready and never miss a deadline.
+      </p>
+    </div>
+
+    <div class="auth-brand-bottom">&copy; {{ currentYear }} CompliSA. All Rights Reserved</div>
+  </div>
+
+  <div class="auth-panel-right">
+    <div class="auth-form-wrap">
+      <div class="auth-mobile-brand">CompliSA</div>
+
+      <h2 class="auth-heading">Create your account</h2>
+      <p class="auth-subtitle">Start tracking your compliance today.</p>
+
+      @if (errorMessage) {
+        <div class="auth-error">{{ errorMessage }}</div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" autocomplete="email" />
+          @if (form.controls.email.hasError('required')) {
+            <mat-error>Email is required.</mat-error>
+          } @else if (form.controls.email.hasError('email')) {
+            <mat-error>Enter a valid email address.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="new-password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+          >
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-hint>At least 8 characters, with an uppercase letter, a lowercase letter, and a digit.</mat-hint>
+          @if (form.controls.password.hasError('required')) {
+            <mat-error>Password is required.</mat-error>
+          } @else if (form.controls.password.hasError('minlength')) {
+            <mat-error>Password must be at least 8 characters.</mat-error>
+          } @else if (form.controls.password.hasError('pattern')) {
+            <mat-error>Password must include an uppercase letter, a lowercase letter, and a digit.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Confirm password</mat-label>
+          <input
+            matInput
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+            formControlName="confirmPassword"
+            autocomplete="new-password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hideConfirmPassword = !hideConfirmPassword"
+            [attr.aria-label]="hideConfirmPassword ? 'Show password' : 'Hide password'"
+          >
+            <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (form.controls.confirmPassword.hasError('required')) {
+            <mat-error>Please confirm your password.</mat-error>
+          } @else if (form.hasError('passwordMismatch')) {
+            <mat-error>Passwords do not match.</mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="full-width submit-button"
+          [disabled]="loading"
+        >
+          @if (loading) {
+            <mat-spinner diameter="20" />
+          } @else {
+            Register
+          }
+        </button>
+      </form>
+
+      <p class="auth-switch">Already have an account? <a routerLink="/login" queryParamsHandling="preserve">Sign in</a></p>
+    </div>
+  </div>
+</div>
